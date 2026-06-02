@@ -1,18 +1,124 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Result</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prediction Result</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+}
+
+.result-card{
+    width:90%;
+    max-width:600px;
+    background:white;
+    padding:35px;
+    text-align:center;
+    border-radius:20px;
+    box-shadow:0 0 30px rgba(0,0,0,0.4);
+    animation:slideUp 0.8s ease;
+}
+
+@keyframes slideUp{
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+h1{
+    color:#16a34a;
+    margin-bottom:20px;
+}
+
+img{
+    width:250px;
+    border-radius:12px;
+    box-shadow:0 0 15px rgba(0,0,0,0.2);
+    margin-bottom:20px;
+}
+
+.result{
+    font-size:30px;
+    color:#dc2626;
+    margin-top:15px;
+    font-weight:bold;
+}
+
+.confidence{
+    font-size:22px;
+    color:#2563eb;
+    margin-top:10px;
+}
+
+.button{
+    display:inline-block;
+    margin-top:25px;
+    padding:12px 25px;
+    background:#2563eb;
+    color:white;
+    text-decoration:none;
+    border-radius:10px;
+    transition:0.3s;
+}
+
+.button:hover{
+    background:#1d4ed8;
+}
+
+.footer{
+    margin-top:20px;
+    color:gray;
+}
+
+</style>
 </head>
+
 <body>
 
-<h1>Prediction Result</h1>
+<div class="result-card">
 
-<img src="{{ image_path }}" width="250">
+<h1>✅ Prediction Completed</h1>
 
-<h2>Blood Group: {{ prediction }}</h2>
-<h3>Confidence: {{ confidence }}%</h3>
+<h3>Uploaded Fingerprint</h3>
 
-<a href="/">Try Again</a>
+<img src="{{ url_for('static', filename='uploads/' + image_file) }}">
+
+<div class="result">
+🩸 Blood Group: {{ prediction }}
+</div>
+
+<div class="confidence">
+📊 Confidence: {{ confidence }}%
+</div>
+
+<a href="/" class="button">
+🔄 Predict Another Fingerprint
+</a>
+
+<div class="footer">
+Blood Group Detection Using Fingerprint
+</div>
+
+</div>
 
 </body>
 </html>

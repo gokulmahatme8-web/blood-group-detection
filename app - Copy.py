@@ -4,7 +4,13 @@ from tensorflow.keras.preprocessing import image
 import numpy as np
 import os
 
-app = Flask(__name__)
+base_dir = os.path.abspath(os.path.dirname(__file__))
+
+app = Flask(
+    __name__,
+    template_folder=os.path.join(base_dir, "templates"),
+    static_folder=os.path.join(base_dir, "static")
+)
 print("Current working directory:", os.getcwd())
 print("Templates folder exists:", os.path.exists("templates"))
 print("Index exists:", os.path.exists("templates/index.html"))
@@ -23,7 +29,6 @@ def home():
     return render_template('index.html')
 
 @app.route('/predict', methods=['POST'])
-@app.route('/predict', methods=['POST'])
 def predict():
 
     if 'fingerprint' not in request.files:
@@ -34,14 +39,7 @@ def predict():
     if file.filename == '':
         return "No selected file"
 
-    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-
-    print("Current working directory:", os.getcwd())
-    print("Upload folder:", app.config['UPLOAD_FOLDER'])
-    print("File path:", filepath)
-
     file.save(filepath)
 
     # Preprocess image
@@ -60,11 +58,11 @@ def predict():
     confidence = round(np.max(prediction) * 100, 2)
 
     return render_template(
-    'result.html',
-    prediction=result,
-    confidence=confidence,
-    image_file=file.filename
-)
+        'result.html',
+        prediction=result,
+        confidence=confidence,
+        image_path=filepath
+    )
 
 if __name__ == '__main__':
     app.run(debug=True)
